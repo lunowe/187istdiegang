@@ -52,7 +52,6 @@ function setup() {
   darkmodeButton.mousePressed(changeDarkMode);
   if (state == "CHOOSING") {
     changeStateToChoosing();
-    
   }
 }
 
@@ -87,24 +86,28 @@ function selectTroops() {
   for (let i = 0; i < 5; i++) {
     if (Player1.troops[i] >= 0 && Player2.troops[i] >= 0) {
       if (Player1.pos == i) {
-        if (keyCode === 68 && troopPool.troopscountList[i] > 0) {
+        if (keyCode === 68 && troopPool.troopscountList[i] > 0 && Player1.cash >= troopPool.troopscostList[i]) {
           troopPool.troopscountList[i] -= 1;
           Player1.troops[i] += 1;
+          Player1.cash -= troopPool.troopscostList[i];
         }
         if (keyCode === 65 && troopPool.troopscountList[i] < troopPool.troopscountListStock[i] && Player1.troops[i] > 0) {
           troopPool.troopscountList[i] += 1;
           Player1.troops[i] -= 1;
+          Player1.cash += troopPool.troopscostList[i];
         }
       }
       
       if (Player2.pos == i) {
-        if (keyCode === RIGHT_ARROW && troopPool.troopscountList[i] > 0) {
+        if (keyCode === RIGHT_ARROW && troopPool.troopscountList[i] > 0 && Player2.cash >= troopPool.troopscostList[i]) {
           troopPool.troopscountList[i] -= 1;
           Player2.troops[i] += 1;
+          Player2.cash -= troopPool.troopscostList[i];
         }
         if (keyCode === LEFT_ARROW && troopPool.troopscountList[i] < troopPool.troopscountListStock[i] && Player2.troops[i] > 0) {
           troopPool.troopscountList[i] += 1;
           Player2.troops[i] -= 1;
+          Player2.cash += troopPool.troopscostList[i];
         }
       }
     }
@@ -159,8 +162,8 @@ function createUIContainer() {
 function createBasicText() {
   createText(`${Player1.name}`, OFFSET_X + RECT_WIDTH / 2, OFFSET_Y / 2, 20);
   createText(`${Player2.name}`, WIDTH - OFFSET_X - RECT_WIDTH / 2, OFFSET_Y / 2, 20);
-  createText(`Cash: ${player1cash}`, OFFSET_X + RECT_WIDTH / 2, HEIGHT - OFFSET_Y / 2, 20);
-  createText(`Cash: ${player2cash}`, WIDTH - OFFSET_X - RECT_WIDTH / 2, HEIGHT - OFFSET_Y / 2, 20);
+  createText(`Cash: ${Player1.cash}`, OFFSET_X + RECT_WIDTH / 2, HEIGHT - OFFSET_Y / 2, 20);
+  createText(`Cash: ${Player2.cash}`, WIDTH - OFFSET_X - RECT_WIDTH / 2, HEIGHT - OFFSET_Y / 2, 20);
 }
 
 function keyPressed() {
