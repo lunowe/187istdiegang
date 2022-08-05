@@ -77,6 +77,7 @@ function draw() {
     createUIContainer();
     Player1.choose();
     Player2.choose();
+    selectTroops();
     showTroopCounts();
   }
 }
@@ -89,12 +90,12 @@ function selectTroops() {
   for (let i = 0; i < 5; i++) {
     if (Player1.troops[i] >= 0 && Player2.troops[i] >= 0) {
       if (Player1.pos == i) {
-        if (buttonWasPressed(D_Button) && troopPool.troopscountList[i] > 0 && Player1.cash >= troopPool.troopscostList[i]) {
+        if (buttonWasPressed(D_Button, Player1) && troopPool.troopscountList[i] > 0 && Player1.cash >= troopPool.troopscostList[i]) {
           troopPool.troopscountList[i] -= 1;
           Player1.troops[i] += 1;
           Player1.cash -= troopPool.troopscostList[i];
         }
-        if (buttonWasPressed(A_Button) && troopPool.troopscountList[i] < troopPool.troopscountListStock[i] && Player1.troops[i] > 0) {
+        if (buttonWasPressed(A_Button, Player1) && troopPool.troopscountList[i] < troopPool.troopscountListStock[i] && Player1.troops[i] > 0) {
           troopPool.troopscountList[i] += 1;
           Player1.troops[i] -= 1;
           Player1.cash += troopPool.troopscostList[i];
@@ -102,12 +103,12 @@ function selectTroops() {
       }
       
       if (Player2.pos == i) {
-        if (buttonWasPressed(RIGHT_ARROW) && troopPool.troopscountList[i] > 0 && Player2.cash >= troopPool.troopscostList[i]) {
+        if (buttonWasPressed(RIGHT_ARROW, Player2) && troopPool.troopscountList[i] > 0 && Player2.cash >= troopPool.troopscostList[i]) {
           troopPool.troopscountList[i] -= 1;
           Player2.troops[i] += 1;
           Player2.cash -= troopPool.troopscostList[i];
         }
-        if (buttonWasPressed(LEFT_ARROW) && troopPool.troopscountList[i] < troopPool.troopscountListStock[i] && Player2.troops[i] > 0) {
+        if (buttonWasPressed(LEFT_ARROW, Player2) && troopPool.troopscountList[i] < troopPool.troopscountListStock[i] && Player2.troops[i] > 0) {
           troopPool.troopscountList[i] += 1;
           Player2.troops[i] -= 1;
           Player2.cash += troopPool.troopscostList[i];
@@ -117,8 +118,8 @@ function selectTroops() {
   }
 }
 
-function buttonWasPressed(keyNum){
-  return keyCode === keyNum;
+function buttonWasPressed(keyNum, Player){
+  return keyIsDown(keyNum) && Player.canSelect();
 }
 
 function showTroopCounts() {
@@ -174,7 +175,7 @@ function createBasicText() {
 }
 
 function keyPressed() {
-  selectTroops();
+  //selectTroops();
   if (keyCode === 87) {
     if (Player1.pos > 0) {
       Player1.pos -= 1;
